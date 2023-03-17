@@ -11,7 +11,8 @@ object HWData {
   val DataDirectory = "data/"
   val fileName = "rep_height_weights.csv"
 
-  def load:HWData =
+  // The load() method reads the csv file and returns an object of the HWData class. 
+  def load():HWData =
   {
     val file = Source.fromFile(DataDirectory + fileName)
     val lines = file.getLines.toVector
