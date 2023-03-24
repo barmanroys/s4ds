@@ -6,12 +6,47 @@ import breeze.linalg._
 import breeze.stats._
 import breeze.optimize._
 
+
+class HWData(
+              val weights:DenseVector[Double],
+              val heights:DenseVector[Double],
+              val reportedWeights:DenseVector[Double],
+              val reportedHeights:DenseVector[Double],
+              val genders:DenseVector[Char]
+            ) {
+
+  val npoints = heights.length
+  require(weights.length == npoints)
+  require(reportedWeights.length == npoints)
+  require(genders.length == npoints)
+  require(reportedHeights.length == npoints)
+
+  lazy val rescaledHeights:DenseVector[Double] =
+    (heights - mean(heights)) / stddev(heights)
+
+  lazy val rescaledWeights:DenseVector[Double] =
+    (weights - mean(weights)) / stddev(weights)
+
+  lazy val featureMatrix:DenseMatrix[Double] =
+    DenseMatrix.horzcat(
+      DenseMatrix.ones[Double](npoints, 1),
+      rescaledHeights.toDenseMatrix.t,
+      rescaledWeights.toDenseMatrix.t
+    )
+
+  lazy val target:DenseVector[Double] =
+    genders.values.map { gender => if(gender == 'M') 1.0 else 0.0 }
+
+  override def toString:String = s"HWData [ $npoints rows ]"
+
+}
+
 object HWData {
   
   val DataDirectory = "data/"
   val fileName = "rep_height_weights.csv"
 
-  // The load() method reads the csv file and returns an object of the HWData class. 
+  // The load() method reads the csv file and returns an object of the HWData class.
   def load():HWData =
   {
     val file = Source.fromFile(DataDirectory + fileName)
@@ -32,37 +67,4 @@ object HWData {
 
 }
 
-class HWData(
-  val weights:DenseVector[Double],
-  val heights:DenseVector[Double],
-  val reportedWeights:DenseVector[Double],
-  val reportedHeights:DenseVector[Double],
-  val genders:DenseVector[Char]
-) {
-
-  val npoints = heights.length
-  require(weights.length == npoints)
-  require(reportedWeights.length == npoints)
-  require(genders.length == npoints)
-  require(reportedHeights.length == npoints)
-
-  lazy val rescaledHeights:DenseVector[Double] =
-    (heights - mean(heights)) / stddev(heights)
-
-  lazy val rescaledWeights:DenseVector[Double] =
-    (weights - mean(weights)) / stddev(weights)
-
-  lazy val featureMatrix:DenseMatrix[Double] =
-    DenseMatrix.horzcat( 
-      DenseMatrix.ones[Double](npoints, 1), 
-      rescaledHeights.toDenseMatrix.t,
-      rescaledWeights.toDenseMatrix.t
-    )
-
-  lazy val target:DenseVector[Double] =
-    genders.values.map { gender => if(gender == 'M') 1.0 else 0.0 }
-
-  override def toString:String = s"HWData [ $npoints rows ]"
-
-}
 
