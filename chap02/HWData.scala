@@ -1,6 +1,7 @@
 
 import scala.reflect.ClassTag
 import io.Source
+import java.nio.file.Paths
 
 import breeze.linalg._
 import breeze.stats._
@@ -49,7 +50,9 @@ object HWData {
   // The load() method reads the csv file and returns an object of the HWData class.
   def load():HWData =
   {
-    val file = Source.fromFile(DataDirectory + fileName)
+    // Join the directory and filepath
+    val full_file_path:String=Paths.get(DataDirectory).resolve(Paths.get(fileName)).toString()
+    val file = Source.fromFile(full_file_path)
     val lines = file.getLines.toVector
     val splitLines = lines.map { _.split(',') }
 
