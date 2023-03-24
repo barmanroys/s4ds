@@ -54,7 +54,10 @@ object HWData {
     val full_file_path:String=Paths.get(DataDirectory).resolve(Paths.get(fileName)).toString()
     val file = Source.fromFile(full_file_path)
     val lines = file.getLines.toVector
-    val splitLines = lines.map { _.split(',') }
+    // This function helps split the lines
+    def splitter(line:String): Array[String]=
+        {return line.split(',')}
+    val splitLines = lines.map(splitter)
 
     def fromList[T:ClassTag](index:Int, converter:(String => T)):DenseVector[T] =
       DenseVector.tabulate(lines.size) { irow => converter(splitLines(irow)(index)) }
