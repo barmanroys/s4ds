@@ -5,7 +5,6 @@ import java.nio.file.Paths
 
 import breeze.linalg._
 import breeze.stats._
-import breeze.optimize._
 
 
 class HWData(
@@ -16,11 +15,11 @@ class HWData(
               val genders:DenseVector[Char]
             ) {
 
-  val npoints = heights.length
-  require(weights.length == npoints)
-  require(reportedWeights.length == npoints)
-  require(genders.length == npoints)
-  require(reportedHeights.length == npoints)
+  val points = heights.length
+  require(weights.length == points)
+  require(reportedWeights.length == points)
+  require(genders.length == points)
+  require(reportedHeights.length == points)
 
   lazy val rescaledHeights:DenseVector[Double] =
     (heights - mean(heights)) / stddev(heights)
@@ -30,7 +29,7 @@ class HWData(
 
   lazy val featureMatrix:DenseMatrix[Double] =
     DenseMatrix.horzcat(
-      DenseMatrix.ones[Double](npoints, 1),
+      DenseMatrix.ones[Double](points, 1),
       rescaledHeights.toDenseMatrix.t,
       rescaledWeights.toDenseMatrix.t
     )
@@ -38,12 +37,12 @@ class HWData(
   lazy val target:DenseVector[Double] =
     genders.values.map { gender => if(gender == 'M') 1.0 else 0.0 }
 
-  override def toString:String = s"HWData [ $npoints rows ]"
+  override def toString:String = s"HWData [ $points rows ]"
 
 }
 
 object HWData {
-  
+  // The paths must be with respect to the build.sbt directory path, not the scala source file directory path.
   val DataDirectory = "data/"
   val fileName = "rep_height_weights.csv"
 
@@ -61,7 +60,7 @@ object HWData {
     val splitLines = lines.map(splitter)
 
     def fromList[T:ClassTag](index:Int, converter:(String => T)):DenseVector[T] =
-      DenseVector.tabulate(lines.size) { irow => converter(splitLines(irow)(index)) }
+      DenseVector.tabulate(lines.size) { row => converter(splitLines(row)(index)) }
 
     val genders = fromList(1, elem => elem.replace("\"", "").head)
     val weights = fromList(2, elem => elem.toDouble)

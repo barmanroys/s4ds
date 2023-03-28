@@ -8,34 +8,25 @@ class LogisticRegression(
   val target:DenseVector[Double]
 )
 {
-  def costFunctionAndGradient(coefficients:DenseVector[Double])
+  private def costFunctionAndGradient(coefficients:DenseVector[Double])
   :(Double, DenseVector[Double]) =
   {
       val xBeta = training * coefficients
       val expXBeta = exp(xBeta)
       val cost = - sum((target :* xBeta) - log1p(expXBeta))
-      val probs = sigmoid(xBeta)
-      val grad = training.t * (probs - target)
+      val probabilities = sigmoid(xBeta)
+      val grad = training.t * (probabilities - target)
       (cost, grad)
   }  
 
-  lazy val optimalCoefficients = calculateOptimalCoefficients
+  lazy val optimalCoefficient:DenseVector[Double] = calculateOptimalCoefficients
 
-  def predict(features:DenseVector[Double]):Double =
-  {
-    val xBeta = optimalCoefficients dot features
-    sigmoid(xBeta)
-  }
 
-  def predictMany(featureMatrix:DenseMatrix[Double]):DenseVector[Double] =
-  {
-    val xBeta = featureMatrix * optimalCoefficients
-    sigmoid(xBeta)
-  }
+
 
   private def calculateOptimalCoefficients:DenseVector[Double] =
   {
-      val f = new DiffFunction[DenseVector[Double]] {
+      val f:DiffFunction[DenseVector[Double]] = new DiffFunction[DenseVector[Double]] {
         def calculate(parameters:DenseVector[Double]) = 
           costFunctionAndGradient(parameters)
       }
