@@ -52,6 +52,7 @@ object HWData {
   {
     // Join the directory and filepath
     val full_file_path:String=Paths.get(DataDirectory).resolve(Paths.get(fileName)).toString()
+    // This gives an iterator like python, which exhausts itself after the first iteration
     val file = Source.fromFile(full_file_path)
     val lines = file.getLines.toVector
     // This function helps split the lines
