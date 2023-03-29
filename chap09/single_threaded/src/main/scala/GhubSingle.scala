@@ -59,10 +59,10 @@ object GhubSingle extends App {
   }
 
   /** Extract a list of followers from JArray */
-  private def extractFollowers(followerArray:JArray):JArray = for {
+  private def extractFollowers(followerArray:JArray):JArray = {for {
       JObject(follower) <- followerArray
       JField("login", JString(login)) <- follower
-    } yield login
+    } yield login}
 
   // Run the crawler
   while (queue.nonEmpty) {
