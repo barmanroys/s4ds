@@ -16,7 +16,8 @@ class HWData(
             ) {
 
   lazy val featureMatrix: DenseMatrix[Double] =
-    DenseMatrix.horzcat(DenseMatrix.ones[Double](points, 1),
+    DenseMatrix.horzcat(
+      DenseMatrix.ones[Double](points, 1),
       rescaled_heights.toDenseMatrix.t,
       rescaled_weights.toDenseMatrix.t)
 
@@ -61,6 +62,7 @@ object HWData {
     def fromList[T: ClassTag](index: Int, converter: String => T): DenseVector[T] =
       DenseVector.tabulate(lines.size) { row => converter(splitLines(row)(index)) }
 
+    // Convert "M" string to M character
     val genders = fromList(1, elem => elem.replace("\"", "").head)
     val weights = fromList(2, elem => elem.toDouble)
     val heights = fromList(3, elem => elem.toDouble)
