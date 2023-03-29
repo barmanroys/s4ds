@@ -7,12 +7,14 @@ class LogisticRegression(
                           val training: DenseMatrix[Double],
                           val target: DenseVector[Double]
                         ) {
-  lazy val optimalCoefficient: DenseVector[Double] = calculateOptimalCoefficients
-
-  private def calculateOptimalCoefficients: DenseVector[Double] = {
+  /** This method performs the minimisation of cost over the coefficients.
+   * It uses the breeze.optimize.minimize method.
+   * */
+  def calculateOptimalCoefficients(): DenseVector[Double] = {
     val f: DiffFunction[DenseVector[Double]] = new DiffFunction[DenseVector[Double]] {
-      def calculate(parameters: DenseVector[Double]): (Double, DenseVector[Double]) =
+      def calculate(parameters: DenseVector[Double]): (Double, DenseVector[Double]) = {
         costFunctionAndGradient(parameters)
+      }
     }
     minimize(f, DenseVector.zeros[Double](training.cols))
   }

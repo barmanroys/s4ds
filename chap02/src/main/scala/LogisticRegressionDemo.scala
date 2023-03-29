@@ -5,7 +5,7 @@ object LogisticRegressionDemo {
     val data = HWData.load() // Method call without arguments can work without the parentheses
     //noinspection SpellCheckingInspection
     val regressor = new LogisticRegression(data.featureMatrix, data.target)
-    val coefficients = regressor.optimalCoefficient
+    val coefficients = regressor.calculateOptimalCoefficients()
     println("Optimal coefficients (on re-scaled data): ")
     println(coefficients)
   }

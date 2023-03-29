@@ -15,14 +15,14 @@ class HWData(
               val genders: DenseVector[Char]
             ) {
 
+
+  lazy val target: DenseVector[Double] =
+    genders.values.map { gender => if (gender == 'M') 1.0 else 0.0 }
   lazy val featureMatrix: DenseMatrix[Double] =
     DenseMatrix.horzcat(
       DenseMatrix.ones[Double](points, 1),
       rescaled_heights.toDenseMatrix.t,
       rescaled_weights.toDenseMatrix.t)
-
-  lazy val target: DenseVector[Double] =
-    genders.values.map { gender => if (gender == 'M') 1.0 else 0.0 }
   private lazy val rescaled_heights: DenseVector[Double] =
     (heights - mean(heights)) / stddev(heights)
   private lazy val rescaled_weights: DenseVector[Double] =
@@ -59,8 +59,17 @@ object HWData {
 
     val splitLines = lines.map(splitter)
 
-    def fromList[T: ClassTag](index: Int, converter: String => T): DenseVector[T] =
-      DenseVector.tabulate(lines.size) { row => converter(splitLines(row)(index)) }
+    /** This function uses implicit context bound, an advanced scala concept. Get back later, but the basic idea is
+     * presented here.
+     * T is the classTag that the function derives, based on the return value of the converter function. The converter
+     * function always takes a string as a parameter. Depending on the feature, it returns either a double or a char.
+     * The gender column needs a char (M or F) to denote the gender.
+     * */
+    def fromList[T: ClassTag](index: Int, converter: String => T): DenseVector[T] = {
+      // DenseVector.tabulate uses a currying pattern and needs arguments in separate parentheses pairs.
+      // DenseVector.tabulate(Int)(Int=>T)=>DenseVector[T]
+      DenseVector.tabulate(lines.size)(row => converter(splitLines(row)(index)))
+    }
 
     // Convert "M" string to M character
     val genders = fromList(1, elem => elem.replace("\"", "").head)
