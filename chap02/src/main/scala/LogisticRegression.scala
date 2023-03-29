@@ -1,7 +1,7 @@
 
-import breeze.linalg._
-import breeze.numerics._
-import breeze.optimize._
+import breeze.linalg.{DenseMatrix, DenseVector, sum}
+import breeze.numerics.{exp, log1p, sigmoid}
+import breeze.optimize.{DiffFunction, minimize}
 
 class LogisticRegression(
                           val training: DenseMatrix[Double],

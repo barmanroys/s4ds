@@ -1,6 +1,6 @@
 
-import breeze.linalg._
-import breeze.stats._
+import breeze.linalg.{DenseMatrix, DenseVector}
+import breeze.stats.{mean, stddev}
 
 import java.nio.file.Paths
 import scala.io.Source
@@ -42,6 +42,7 @@ object HWData {
   private val fileName = "rep_height_weights.csv"
 
   /** The load() method reads the csv file and returns an instance of the HWData class. */
+
   def load(): HWData = {
     //noinspection JavaAccessorEmptyParenCall
     // Join the directory and filepath
