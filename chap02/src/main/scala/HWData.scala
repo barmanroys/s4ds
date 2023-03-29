@@ -41,16 +41,16 @@ object HWData {
   private val DataDirectory = "data/"
   private val fileName = "rep_height_weights.csv"
 
-  // The load() method reads the csv file and returns an object of the HWData class.
+  /** The load() method reads the csv file and returns an instance of the HWData class. */
   def load(): HWData = {
     //noinspection JavaAccessorEmptyParenCall
     // Join the directory and filepath
     val full_file_path: String = Paths.get(DataDirectory).resolve(Paths.get(fileName)).toString()
-    // This gives an iterator like python, which exhausts itself after the first iteration
-    val file = Source.fromFile(full_file_path)
+
+    val file = Source.fromFile(full_file_path) // Python like iterator, which exhausts itself after the first iteration
     val lines = file.getLines.toVector // Extract the lines from the iterator
 
-    // This function helps split the lines
+    /** This function helps split the lines */
     def splitter(line: String): Array[String] = {
       line.split(',')
     }
