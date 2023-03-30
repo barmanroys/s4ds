@@ -1,5 +1,5 @@
 
-scalaVersion := "2.11.7"
+scalaVersion := "3.2.2"
 
 libraryDependencies ++= Seq(
   "org.json4s" %% "json4s-native" % "3.2.10",

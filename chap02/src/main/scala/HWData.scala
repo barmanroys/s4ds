@@ -1,3 +1,4 @@
+/** This file exposes the HWData class containing all the data related attributes. */
 
 import breeze.linalg.{DenseMatrix, DenseVector}
 import breeze.stats.{mean, stddev}
