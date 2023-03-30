@@ -1,14 +1,14 @@
-name := "S4DS"
+name := "Logistic_regression"
 
-organization := "s4ds"
+organization := "My Organisation"
 
 version := "0.1.0-SNAPSHOT"
 
-scalaVersion := "2.11.7"
+scalaVersion := "3.2.2" //  2.11.7 according to the book repository
 
 libraryDependencies ++= Seq(
-  "org.scalanlp" %% "breeze" % "0.11.2",
-  "org.scalanlp" %% "breeze-natives" % "0.11.2",
-  "org.slf4j" % "slf4j-simple" % "1.7.5"
+  "org.scalanlp" %% "breeze" % "2.1.0",
+  "org.scalanlp" %% "breeze-natives" % "2.1.0",
+  "org.slf4j" % "slf4j-simple" % "2.0.5"
 )
 
