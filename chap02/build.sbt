@@ -12,3 +12,10 @@ libraryDependencies ++= Seq(
   "org.slf4j" % "slf4j-simple" % "2.0.5"
 )
 
+assemblyMergeStrategy in assembly := {
+  case "META-INF/versions/9/module-info.class" => MergeStrategy.discard
+  case x =>
+    val oldStrategy = (assemblyMergeStrategy in assembly).value
+    oldStrategy(x)
+}
+

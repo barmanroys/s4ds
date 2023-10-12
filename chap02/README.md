@@ -7,4 +7,6 @@ This chapter introduces manipulating tabular data with Breeze. We use CSVs with 
  * `LogisticRegression.scala`: Re-usable Scala class implementing logistic regression.
  * `LogisticRegressionDemo.scala`: Example run for the Logistic regression class.
 
-Type `$ sbt run` to run `LogisticRegressionDemo`. Type `sbt console` to get a Scala console pre-loaded with Breeze.
+Type `$ sbt run` to run `LogisticRegressionDemo`. 
+Type `$ sbt console` to get a Scala console pre-loaded with Breeze.
+Type `$ sbt assembly` to get a fat jar containing all the dependencies.  
